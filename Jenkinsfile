@@ -41,7 +41,7 @@ pipeline {
                     sh '''
                         ansible-playbook -i inventory.ini deploy-playbook.yml \
                         --private-key $SSH_KEY \
-                        --user ec2-user \
+                        --user ubuntu \
                         --become --become-user=root
                     '''
                 }
