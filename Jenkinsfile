@@ -37,11 +37,16 @@ pipeline {
 
         stage('Deploy with Ansible') {
             steps {
-                // withCredentials([sshUserPrivateKey(credentialsId: 'ansible-ssh-key', keyFileVariable: 'SSH_KEY')]) 
+                withCredentials([sshUserPrivateKey(credentialsId: 'ansible-ssh-key', keyFileVariable: 'SSH_KEY')]) {
                     sh '''
-                        ansible-playbook -i inventory.ini deploy-playbook.yml --become --become-user=root 
-                    '''                
+                        ansible-playbook -i inventory.ini deploy-playbook.yml \
+                        --private-key $SSH_KEY \
+                        --user ec2-user \
+                        --become --become-user=root
+                    '''
+                }
             }
         }
+
     }
 }
